@@ -1,0 +1,5 @@
+---
+  roms:
+    - name: gb
+    - name: gba
+    - name: gbc

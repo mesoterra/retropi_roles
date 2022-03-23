@@ -1,0 +1,11 @@
+---
+  - name: Updating Centos/RHEL
+    yum:
+      name: "*"
+      state: latest
+    register: results
+
+  - name: "Checking If Reboot Is Needed"
+    set_fact:
+      needs_reboot: true
+    when: results.changed

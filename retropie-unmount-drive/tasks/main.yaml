@@ -1,0 +1,10 @@
+---
+  - name: "Unmounting {{ drive_to_mount }}1"
+    ansible.builtin.shell:
+      cmd: "umount {{ mount_location }}/1"
+    delegate_to: localhost
+
+  - name: "Unmounting {{ drive_to_mount }}2"
+    ansible.builtin.shell:
+      cmd: "umount {{ mount_location }}/2"
+    delegate_to: localhost

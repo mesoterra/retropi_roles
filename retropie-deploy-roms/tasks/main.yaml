@@ -1,0 +1,8 @@
+---
+  - name: "Uploading ROMS"
+    ansible.builtin.copy:
+      src: "{{ role_path }}/files/{{ item.name }}"
+      dest: "/home/pi/RetroPie/roms/"
+      owner: pi
+      group: pi
+    with_items: "{{ roms }}"

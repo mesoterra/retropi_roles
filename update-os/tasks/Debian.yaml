@@ -1,0 +1,12 @@
+---
+  - name: Updating Apt System
+    apt:
+      name: "*"
+      state: latest
+      update_cache: yes
+    register: results
+
+  - name: "Checking If Reboot Is Needed"
+    set_fact:
+      needs_reboot: true
+    when: results.changed

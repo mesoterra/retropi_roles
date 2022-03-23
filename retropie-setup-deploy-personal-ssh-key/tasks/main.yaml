@@ -1,0 +1,17 @@
+---
+  - name: "Ensuring {{ mount_location }}/2/root/.ssh Exists"
+    ansible.builtin.file:
+      path: "{{ mount_location }}/2/root/.ssh"
+      owner: root
+      group: root
+      mode: '0700'
+      state: directory
+    delegate_to: localhost
+  - name: "Deploying Personal SSH Key To Root User"
+    ansible.builtin.copy:
+      src: "{{ personal_ssh_key }}"
+      dest: "{{ mount_location }}/2/root/.ssh/authorized_keys"
+      owner: root
+      group: root
+      mode: '0600'
+    delegate_to: localhost

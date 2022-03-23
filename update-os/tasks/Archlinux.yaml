@@ -1,0 +1,11 @@
+---
+  - name: "Updating Arch Linux"
+    pacman:
+      update_cache: yes
+      upgrade: yes
+    register: result
+
+  - name: "Checking If Reboot Is Needed"
+    set_fact:
+      needs_reboot: true
+    when: result.changed

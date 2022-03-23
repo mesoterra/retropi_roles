@@ -1,0 +1,35 @@
+---
+  - name: "Downloading GPI Patch"
+    ansible.builtin.unarchive:
+      src: "https://support.retroflag.com/Products/GPi_Case/GPi_Case_patch.zip"
+      dest: /root
+      owner: root
+      group: root
+      remote_src: yes
+  - name: "Deploying GPI Patch: config.txt"
+    ansible.builtin.copy:
+      src: "/root/GPi_Case_patch/GPi_Case_patch/patch_files/config.txt"
+      dest: "/boot/config.txt"
+      owner: root
+      group: root
+      mode: '0644'
+      remote_src: yes
+      force: yes
+  - name: "Deploying GPI Patch: dpi24.dtbo"
+    ansible.builtin.copy:
+      src: "/root/GPi_Case_patch/GPi_Case_patch/patch_files/overlays/dpi24.dtbo"
+      dest: "/boot/overlays/dpi24.dtbo"
+      owner: root
+      group: root
+      mode: '0644'
+      remote_src: yes
+      force: yes
+  - name: "Deploying GPI Patch: pwm-audio-pi-zero.dtbo"
+    ansible.builtin.copy:
+      src: "/root/GPi_Case_patch/GPi_Case_patch/patch_files/overlays/pwm-audio-pi-zero.dtbo"
+      dest: "/boot/overlays/pwm-audio-pi-zero.dtbo"
+      owner: root
+      group: root
+      mode: '0644'
+      remote_src: yes
+      force: yes

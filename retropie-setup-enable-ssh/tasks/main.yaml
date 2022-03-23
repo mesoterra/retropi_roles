@@ -1,0 +1,9 @@
+---
+  - name: "Enabling SSH For RetroPie"
+    ansible.builtin.file:
+      path: "{{ mount_location }}/1/ssh.txt"
+      owner: root
+      group: root
+      mode: '0644'
+      state: touch
+    delegate_to: localhost

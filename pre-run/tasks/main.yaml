@@ -1,0 +1,7 @@
+---
+  - name: Initiating Print Variable
+    set_fact:
+      print_output: ""
+  - name: Prepping needs reboot variable incase it is needed
+    set_fact:
+      needs_reboot: true

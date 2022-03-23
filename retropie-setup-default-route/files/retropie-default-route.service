@@ -1,0 +1,12 @@
+[Unit]
+Description=Sets default route for RetroPie
+After=network-online.target
+
+[Service]
+ExecStartPre=/bin/sleep 10
+User=root
+Group=root
+ExecStart=/root/.custom_scripts/default-route.sh
+
+[Install]
+WantedBy=default.target

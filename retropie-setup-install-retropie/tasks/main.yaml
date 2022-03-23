@@ -1,0 +1,43 @@
+---
+  - name: "Getting Fresh Retropie Download Link"
+    ansible.builtin.shell:
+      cmd: echo "https://github.com$(curl -s "$(curl -s "https://github.com/RetroPie/RetroPie-Setup/releases/latest" | grep -oP '(?<=href=")[^"]*')" | grep -oP '(?<=a href=").*retropie-buster-[0-9\.]*-rpi1_zero.img.gz' | head -1)"
+    become: no
+    register: retropie_download
+    delegate_to: localhost
+
+  - name: "Setting Unarchived Name Variable"
+    ansible.builtin.shell:
+      cmd: "echo {{ retropie_download.stdout }} | rev | cut -d '.' -f2- | cut -d '/' -f-1 | rev"
+      executable: /bin/bash
+    become: no
+    register: img_file
+    delegate_to: localhost
+
+  - name: "Checking If IMG File Exists"
+    ansible.builtin.stat:
+      path: "{{ role_path }}/files/{{ img_file.stdout }}"
+    register: img_file_exists
+    delegate_to: localhost
+
+  - name: "Downloading Retropie"
+    get_url:
+      url: "{{ retropie_download.stdout }}"
+      dest: "{{ role_path }}/files/"
+    become: no
+    delegate_to: localhost
+    when: not img_file_exists.stat.exists
+
+  - name: "Unpacking Retropie"
+    ansible.builtin.shell:
+      cmd: "gunzip {{ role_path }}/files/{{ img_file.stdout }}.gz"
+      executable: /bin/bash
+    delegate_to: localhost
+    when: not img_file_exists.stat.exists
+
+  - name: "Installing Retropie Image On {{ drive_to_mount }}"
+    ansible.builtin.shell:
+      cmd: "dd if={{ role_path }}/files/{{ img_file.stdout }} of={{ drive_to_mount }} bs=2M conv=fsync"
+      executable: /bin/bash
+    become: yes
+    delegate_to: localhost

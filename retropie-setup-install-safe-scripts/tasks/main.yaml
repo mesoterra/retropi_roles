@@ -1,0 +1,28 @@
+---
+  - name: "Updating APT Cache"
+    ansible.builtin.shell:
+      cmd: "echo 'dW50aWwgW1sgJGNvdW50ZXIgPiA1IF1dCmRvCglvdXRwdXQ9JChhcHQtZ2V0IHVwZGF0ZSAteSAtLWFsbG93LXJlbGVhc2VpbmZvLWNoYW5nZSAyPiYxIHwgZ3JlcCAtbyBvbGRzdGFibGUgfCB0YWlsIC1uMSkKCWlmIFtbICIkb3V0cHV0IiA9PSAnb2xkc3RhYmxlJyBdXSA7IHRoZW4KCQllY2hvICdmYWlsZWQnCgkJKChjb3VudGVyKyspKQoJZWxzZQoJCWVjaG8gJ3N1Y2Nlc3MnCgkJY291bnRlcj02CglmaQpkb25lCg==' | base64 -d | bash -l"
+      executable: /bin/bash
+
+  - name: "Installing python3-gpiozero"
+    ansible.builtin.apt:
+      name: python3-gpiozero
+      state: latest
+      update_cache: no
+
+  - name: "Creating Script Directory"
+    ansible.builtin.shell:
+      cmd: "mkdir /opt/RetroFlag"
+
+  - name: "Downloading Safe Shutdown Script"
+    ansible.builtin.get_url:
+      url: "https://raw.githubusercontent.com/RetroFlag/retroflag-picase/master/SafeShutdown_gpi.py"
+      dest: "/opt/RetroFlag/SafeShutdown.py"
+      owner: root
+      group: root
+      mode: '0700'
+
+  - name: "Implementing Safe Shutdown Script"
+    ansible.builtin.shell:
+      cmd: 'sed -i -e "s/^exit 0/sudo python3 \/opt\/RetroFlag\/SafeShutdown.py \&\n&/g" /etc/rc.local'
+      executable: /bin/bash

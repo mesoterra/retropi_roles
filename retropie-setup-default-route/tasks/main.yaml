@@ -1,0 +1,24 @@
+---
+# if your home network breaks default network routes on debian machines like mine
+  - name: "Preparing Remote Script Directory: /root/.custom_scripts"
+    ansible.builtin.shell:
+      cmd: 'mkdir /root/.custom_scripts'
+      executable: /bin/bash
+  - name: "Uploading Default Route Script"
+    ansible.builtin.template:
+      src: "{{ role_path }}/files/default-route.sh.j2"
+      dest: "/root/.custom_scripts/default-route.sh"
+      owner: root
+      group: root
+      mode: '0700'
+  - name: "Uploading Service File"
+    ansible.builtin.copy:
+      src: "{{ role_path }}/files/retropie-default-route.service"
+      dest: "/etc/systemd/system/retropie-default-route.service"
+      owner: root
+      group: root
+      mode: '0644'
+  - name: "Enabling Service File"
+    ansible.builtin.shell:
+      cmd: "systemctl enable retropie-default-route ; systemctl start retropie-default-route"
+      executable: /bin/bash

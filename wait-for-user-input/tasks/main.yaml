@@ -1,0 +1,4 @@
+---
+  - name: "Waiting For User To Proceed"
+    pause:
+      prompt: "Do whatever it is you need to do and then continue."

@@ -1,0 +1,28 @@
+---
+  - name: "Preparing Boot Mount Locaion"
+    ansible.builtin.file:
+      path: "{{ mount_location }}/1"
+      owner: root
+      group: root
+      mode: '0755'
+      state: directory
+    delegate_to: localhost
+
+  - name: "Preparing / Mount Locaion"
+    ansible.builtin.file:
+      path: "{{ mount_location }}/2"
+      owner: root
+      group: root
+      mode: '0755'
+      state: directory
+    delegate_to: localhost
+
+  - name: "Mounting {{ drive_to_mount }}1"
+    ansible.builtin.shell:
+      cmd: "mount {{ drive_to_mount }}1 {{ mount_location }}/1"
+    delegate_to: localhost
+
+  - name: "Mounting {{ drive_to_mount }}2"
+    ansible.builtin.shell:
+      cmd: "mount {{ drive_to_mount }}2 {{ mount_location }}/2"
+    delegate_to: localhost

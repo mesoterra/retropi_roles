@@ -1,0 +1,17 @@
+---
+  - name: "Deploying Interface Config File"
+    ansible.builtin.copy:
+      src: "{{ role_path }}/files/net.conf"
+      dest: "{{ mount_location }}/2/etc/network/interfaces.d/net.conf"
+      owner: root
+      group: root
+      mode: '0644'
+    delegate_to: localhost
+  - name: "Deploying WPA Supplicant Config"
+    ansible.builtin.template:
+      src: "{{ role_path }}/files/wpa_supplicant.conf.j2"
+      dest: "{{ mount_location }}/2/etc/wpa_supplicant/wpa_supplicant.conf"
+      owner: root
+      group: root
+      mode: '0600'
+    delegate_to: localhost
